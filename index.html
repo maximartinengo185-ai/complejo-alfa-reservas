@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>FacilReserva • Complejo Alfa - Reserva tu Turno</title>
+
+  <!-- Tipografía Inter Oficial -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN con paleta Sage Green + White -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sage: {
+              bg: '#F8FAF7',
+              surface: '#FFFFFF',
+              light: '#DDE8D9',
+              primary: '#718B70',
+              hover: '#617760',
+              active: '#516450',
+              dark: '#304332',
+              border: '#E5EAE2',
+              text: '#263128',
+              muted: '#778078',
+              disabled: '#F0F2EF'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif']
+          },
+          boxShadow: {
+            subtle: '0 1px 3px 0 rgba(38, 49, 40, 0.04), 0 1px 2px -1px rgba(38, 49, 40, 0.04)',
+            card: '0 4px 6px -1px rgba(38, 49, 40, 0.04), 0 2px 4px -2px rgba(38, 49, 40, 0.04)',
+            modal: '0 20px 25px -5px rgba(38, 49, 40, 0.08), 0 8px 10px -6px rgba(38, 49, 40, 0.06)'
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Variables de diseño centralizadas y blindaje anti-desborde -->
+  <style>
+    :root {
+      --bg-main: #F8FAF7;
+      --surface-card: #FFFFFF;
+      --sage-light: #DDE8D9;
+      --sage-primary: #718B70;
+      --sage-primary-hover: #617760;
+      --sage-primary-active: #516450;
+      --sage-dark: #304332;
+      --border-subtle: #E5EAE2;
+      --text-main: #263128;
+      --text-muted: #778078;
+      --disabled-bg: #F0F2EF;
+    }
+
+    *, *::before, *::after {
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    img, svg, button, input, select {
+      max-width: 100%;
+    }
+
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0.8; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .slide-up { animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.97); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .fade-in { animation: fadeIn 0.2s ease-out forwards; }
+
+    input { font-size: 16px !important; }
+
+    input:focus, button:focus-visible {
+      outline: 2px solid var(--sage-primary);
+      outline-offset: 2px;
+    }
+  </style>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+</head>
+<body class="min-h-screen select-none antialiased flex flex-col justify-between w-full max-w-full overflow-x-hidden">
+
+  <!-- ================= ENCABEZADO SUPERIOR SAAS MINIMALISTA ================= -->
+  <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-sage-border px-3.5 py-2.5 sm:px-4 sm:py-3 shadow-subtle w-full max-w-full">
+    <div class="max-w-2xl mx-auto flex items-center justify-between gap-2 w-full">
+      
+      <!-- Logo y Marca FacilReserva -->
+      <div class="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
+        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-sage-light border border-sage-primary/30 flex items-center justify-center flex-shrink-0 text-sage-dark shadow-subtle">
+          <svg class="w-4 h-4 sm:w-5 sm:h-5 text-sage-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/>
+            <path d="M12 6v6l4 2"/>
+          </svg>
+        </div>
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <h1 class="text-sm sm:text-base font-bold tracking-tight text-sage-dark leading-tight truncate">
+              FacilReserva
+            </h1>
+            <span class="text-[9px] font-semibold text-sage-dark bg-sage-light/80 px-1.5 py-0.2 rounded-full border border-sage-primary/20 flex-shrink-0">Alfa Pádel</span>
+          </div>
+          <p class="text-[10px] sm:text-xs text-sage-muted font-medium truncate leading-tight mt-0.5">Reserva de canchas en línea</p>
+        </div>
+      </div>
+
+      <!-- Indicador en vivo -->
+      <div class="flex items-center gap-1.5 px-2 py-1 bg-sage-light/60 border border-sage-primary/20 rounded-full text-[10px] sm:text-xs text-sage-dark font-medium flex-shrink-0">
+        <span class="w-1.5 h-1.5 rounded-full bg-sage-primary animate-pulse"></span>
+        <span>En vivo</span>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ================= CONTENEDOR PRINCIPAL ================= -->
+  <main class="flex-1 max-w-2xl w-full mx-auto p-3.5 sm:p-6 space-y-4 sm:space-y-6 overflow-x-hidden">
+
+    <!-- Banner de Modo Offline del Cliente -->
+    <div id="banner-offline-mode" class="hidden p-2.5 sm:p-3 bg-stone-100 border border-stone-300 text-stone-800 rounded-2xl text-xs flex items-center gap-2.5 shadow-subtle fade-in">
+      <span class="text-base flex-shrink-0">📡</span>
+      <div class="min-w-0 flex-1">
+        <strong class="font-bold">Modo sin conexión detectado:</strong>
+        <span class="text-stone-600 block sm:inline"> Tu reserva se gestionará de inmediato a través del canal de WhatsApp.</span>
+      </div>
+    </div>
+
+    <!-- Banner de Recuperación de Intento Local (Contingencia previa) -->
+    <div id="banner-recuperacion-contingencia" class="hidden p-3 sm:p-3.5 bg-amber-50 border border-amber-300 rounded-2xl text-xs text-amber-900 shadow-subtle flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 fade-in">
+      <div class="flex items-center gap-2.5 min-w-0 flex-1">
+        <span class="text-lg flex-shrink-0">🛡️</span>
+        <div class="min-w-0 flex-1">
+          <p class="font-bold leading-tight truncate">Tenés una solicitud de turno pendiente (<span id="banner-contingencia-codigo" class="font-mono">ALFA-CONT-...</span>)</p>
+          <p class="text-[11px] text-amber-800 leading-tight mt-0.5 truncate" id="banner-contingencia-detalle"></p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0 w-full sm:w-auto">
+        <button type="button" onclick="reabrirModalContingenciaGuardado()" class="flex-1 sm:flex-initial px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] shadow-subtle flex items-center justify-center gap-1.5 transition">
+          <span>💬 Enviar por WhatsApp</span>
+        </button>
+        <button type="button" onclick="descartarIntentoContingenciaLocal()" class="px-2.5 py-1.5 rounded-xl bg-amber-200/60 hover:bg-amber-200 text-amber-900 font-semibold text-[11px] transition" title="Descartar borrador">
+          ✕
+        </button>
+      </div>
+    </div>
+
+    <!-- Card de Bienvenida / Contexto del Club -->
+    <section class="bg-sage-surface border border-sage-border rounded-2xl p-3.5 sm:p-5 shadow-subtle flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 w-full">
+      <div class="min-w-0 flex-1">
+        <h2 class="text-xs sm:text-sm font-semibold text-sage-dark truncate">Complejo Alfa • Canchas Profesionales</h2>
+        <p class="text-[11px] sm:text-xs text-sage-muted mt-0.5 leading-relaxed">Seleccioná el día, elegí tu cancha y confirmá tu turno al instante.</p>
+      </div>
+      <div class="flex items-center gap-1.5 text-[11px] font-medium text-sage-dark bg-sage-bg px-2.5 py-1.5 rounded-xl border border-sage-border flex-shrink-0">
+        <svg class="w-3.5 h-3.5 text-sage-primary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+        <span>Córdoba Capital</span>
+      </div>
+    </section>
+
+    <!-- Selector de Días (Carrusel Responsivo con Overflow Seguro) -->
+    <section class="space-y-1.5 w-full min-w-0 overflow-hidden">
+      <div class="flex justify-between items-center text-xs px-1 gap-2">
+        <span class="font-semibold text-sage-muted uppercase tracking-wider text-[10px] sm:text-[11px] flex-shrink-0">Elegir Fecha</span>
+        <span id="label-dia-seleccionado" class="font-bold text-sage-dark text-xs truncate text-right"></span>
+      </div>
+      <div class="w-full max-w-full overflow-hidden">
+        <div id="carrusel-dias" class="flex gap-2 overflow-x-auto no-scrollbar py-1 px-0.5 scroll-smooth w-full"></div>
+      </div>
+    </section>
+
+    <!-- Selector de Canchas (Segmented Control Elegante) -->
+    <section class="space-y-1.5 w-full">
+      <div class="flex justify-between items-center px-1">
+        <span class="font-semibold text-sage-muted uppercase tracking-wider text-[10px] sm:text-[11px]">Seleccionar Cancha</span>
+        <span id="tarifa-cancha-badge" class="text-xs font-semibold text-sage-dark bg-sage-light px-2 py-0.5 rounded-lg border border-sage-primary/20 font-mono">
+          $16.000 / turno
+        </span>
+      </div>
+      <div class="grid grid-cols-2 gap-1.5 p-1 bg-sage-disabled rounded-2xl border border-sage-border w-full">
+        <button id="tab-cancha1" onclick="cambiarCancha(1)" class="py-2 sm:py-2.5 rounded-xl font-semibold text-xs tracking-wide transition-all duration-200 truncate">
+          Cancha 1
+        </button>
+        <button id="tab-cancha2" onclick="cambiarCancha(2)" class="py-2 sm:py-2.5 rounded-xl font-semibold text-xs tracking-wide transition-all duration-200 truncate">
+          Cancha 2
+        </button>
+      </div>
+    </section>
+
+    <!-- Banner si el Complejo está cerrado en la fecha seleccionada -->
+    <div id="banner-dia-cerrado" class="hidden p-4 rounded-2xl bg-amber-50 border border-amber-200 text-center space-y-1">
+      <div class="text-xs font-bold text-amber-800">🚫 Complejo Cerrado este día</div>
+      <p class="text-[11px] text-amber-700">Por favor seleccioná otro día de la semana para reservar tu turno.</p>
+    </div>
+
+    <!-- Grilla de Horarios y Disponibilidad -->
+    <section id="contenedor-grilla-seccion" class="space-y-2.5 w-full min-w-0">
+      <div class="flex justify-between items-center px-1 gap-2">
+        <span class="font-semibold text-sage-muted uppercase tracking-wider text-[10px] sm:text-[11px] flex-shrink-0">Horarios Disponibles</span>
+        <span id="label-duracion-turnos" class="text-[10px] sm:text-xs text-sage-muted truncate text-right">Turnos de 90 min</span>
+      </div>
+      <div id="grilla-turnos" class="space-y-2.5 w-full min-w-0">
+        <div class="text-center py-10 text-sage-muted text-xs font-medium bg-sage-surface rounded-2xl border border-sage-border animate-pulse">
+          Cargando horarios disponibles...
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= PIE DE PÁGINA PROFESIONAL ================= -->
+  <footer class="mt-6 border-t border-sage-border bg-sage-surface py-5 px-4 text-center w-full">
+    <div class="max-w-2xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2.5 text-xs text-sage-muted">
+      <div class="flex items-center gap-2">
+        <span class="font-semibold text-sage-dark">FacilReserva</span>
+        <span>•</span>
+        <span>Complejo Alfa Pádel</span>
+      </div>
+      <div class="flex items-center gap-1.5 text-[11px]">
+        <svg class="w-3.5 h-3.5 text-sage-primary flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944z" clip-rule="evenodd"/>
+        </svg>
+        <span>Confirmación segura e instantánea</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= MODAL BOTTOM-SHEET / DIALOG ================= -->
+  <div id="modal-reserva" class="fixed inset-0 bg-[#263128]/40 backdrop-blur-sm hidden items-end sm:items-center justify-center z-50 p-0 sm:p-4 transition-all">
+    <div class="w-full max-w-lg bg-sage-surface border border-sage-border rounded-t-3xl sm:rounded-2xl p-4 sm:p-6 space-y-4 shadow-modal slide-up sm:fade-in max-h-[92vh] overflow-y-auto">
+      
+      <!-- Drag handle móvil -->
+      <div class="w-10 h-1 bg-sage-border rounded-full mx-auto -mt-1 mb-1 sm:hidden"></div>
+      
+      <!-- Cabecera del modal -->
+      <div class="flex items-start justify-between border-b border-sage-border pb-3 gap-2">
+        <div class="min-w-0 flex-1">
+          <h3 class="text-base sm:text-lg font-bold text-sage-dark tracking-tight truncate">Confirmar Turno</h3>
+          <p id="modal-detalle" class="text-xs text-sage-muted mt-0.5 font-medium truncate"></p>
+        </div>
+        <div class="text-right flex-shrink-0">
+          <span id="modal-horario" class="text-xs font-bold text-sage-dark bg-sage-light px-2.5 py-1 rounded-xl border border-sage-primary/20 inline-block"></span>
+          <div id="modal-precio-tag" class="text-xs font-mono font-bold text-sage-dark mt-1"></div>
+        </div>
+      </div>
+
+      <!-- Formulario de datos del jugador -->
+      <div class="space-y-3">
+        <div>
+          <label for="reserva-nombre" class="text-xs text-sage-dark block mb-1 font-semibold">Nombre y Apellido</label>
+          <input type="text" id="reserva-nombre" class="w-full bg-sage-bg border border-sage-border rounded-xl px-3 py-2.5 text-sm text-sage-text placeholder-sage-muted/70 focus:outline-none focus:border-sage-primary focus:bg-white transition" placeholder="Ej: Marcos Rossi" autocomplete="name">
+        </div>
+        <div>
+          <label for="reserva-tel" class="text-xs text-sage-dark block mb-1 font-semibold">Teléfono / WhatsApp</label>
+          <input type="tel" id="reserva-tel" class="w-full bg-sage-bg border border-sage-border rounded-xl px-3 py-2.5 text-sm text-sage-text placeholder-sage-muted/70 focus:outline-none focus:border-sage-primary focus:bg-white transition" placeholder="Ej: 351 651 4995" autocomplete="tel">
+          <p class="text-[10px] sm:text-[11px] text-sage-muted mt-1">Recibirás la confirmación del turno en este número.</p>
+        </div>
+      </div>
+
+      <!-- Botones de Acción -->
+      <div class="grid grid-cols-2 gap-2.5 pt-1">
+        <button type="button" onclick="cerrarModal()" class="w-full py-2.5 rounded-xl bg-sage-disabled hover:bg-sage-border text-sage-dark text-xs font-semibold transition truncate">
+          Cancelar
+        </button>
+        <button type="button" id="btn-confirmar-jugador" onclick="guardarReserva()" class="w-full py-2.5 rounded-xl bg-sage-primary hover:bg-sage-hover active:bg-sage-active text-white text-xs font-bold transition shadow-subtle truncate flex items-center justify-center gap-1">
+          <span>Confirmar Turno</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= MODAL CONFIRMACIÓN DE ÉXITO ================= -->
+  <div id="modal-exito" class="fixed inset-0 bg-[#263128]/45 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+    <div class="w-full max-w-sm bg-sage-surface border border-sage-border rounded-2xl p-5 sm:p-6 text-center space-y-3.5 shadow-modal fade-in">
+      <div class="w-11 h-11 bg-sage-light text-sage-primary rounded-full flex items-center justify-center mx-auto border border-sage-primary/30">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+      </div>
+      <div>
+        <h4 class="text-sm sm:text-base font-bold text-sage-dark">¡Turno Reservado con Éxito!</h4>
+        <p id="exito-detalle" class="text-xs text-sage-muted mt-1 font-medium leading-relaxed"></p>
+      </div>
+      <button onclick="cerrarExito()" class="w-full py-2.5 rounded-xl bg-sage-primary hover:bg-sage-hover text-white text-xs font-semibold transition shadow-subtle">
+        Entendido
+      </button>
+    </div>
+  </div>
+
+  <!-- ================= POP-UP DE ERROR / DERIVACIÓN DIRECTA A WHATSAPP ================= -->
+  <div id="modal-contingencia" class="fixed inset-0 bg-[#263128]/60 backdrop-blur-md hidden items-center justify-center z-50 p-3 sm:p-4 transition-all" onclick="if(event.target===this) cerrarModalContingencia();">
+    <div class="w-full max-w-md bg-sage-surface border border-sage-border rounded-3xl p-5 sm:p-6 text-left space-y-4 shadow-modal fade-in my-auto max-h-[92dvh] overflow-y-auto" onclick="event.stopPropagation();">
+      
+      <!-- Drag handle móvil -->
+      <div class="w-10 h-1 bg-sage-border rounded-full mx-auto -mt-1 mb-2 sm:hidden"></div>
+
+      <!-- Encabezado del Pop-up: Hubo un problema -->
+      <div class="flex items-start gap-3">
+        <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-amber-100 border border-amber-300 text-amber-700 flex items-center justify-center flex-shrink-0 text-2xl shadow-subtle">
+          ⚠️
+        </div>
+        <div class="min-w-0 flex-1">
+          <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300 mb-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-amber-600 animate-pulse"></span>
+            Aviso del Sistema
+          </div>
+          <h3 class="text-base sm:text-lg font-bold text-sage-dark leading-tight">
+            Hubo un problema con la reserva
+          </h3>
+          <p class="text-xs text-sage-muted mt-1 font-medium leading-relaxed">
+            Tuvimos un inconveniente técnico momentáneo en la web. Por favor <strong>hablanos directamente por WhatsApp</strong> para confirmar y asegurar tu turno:
+          </p>
+        </div>
+      </div>
+
+      <!-- Tarjeta Destacada con el Número de WhatsApp al lado -->
+      <div class="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-between gap-3 shadow-subtle">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-lg flex-shrink-0 shadow-sm">
+            💬
+          </div>
+          <div class="min-w-0">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-800 block">WhatsApp de Atención</span>
+            <span id="contingencia-numero-visible" class="text-sm sm:text-base font-bold font-mono text-sage-dark truncate block">
+              Contactar a administración
+            </span>
+          </div>
+        </div>
+        <button type="button" id="btn-copiar-num-admin" onclick="copiarNumeroAdmin()" class="hidden px-2.5 py-1.5 rounded-xl bg-white border border-emerald-500/30 text-emerald-800 text-[11px] font-bold hover:bg-emerald-50 transition shadow-subtle flex-shrink-0 cursor-pointer">
+          Copiar Nro
+        </button>
+      </div>
+
+      <!-- Resumen del Turno Guardado -->
+      <div class="bg-sage-bg/80 border border-sage-border rounded-2xl p-3.5 space-y-2 text-xs">
+        <div class="flex items-center justify-between pb-2 border-b border-sage-border/80">
+          <span class="text-sage-muted font-medium text-[11px]">Código de Reserva:</span>
+          <span id="contingencia-codigo-tag" class="font-mono font-bold text-sage-dark bg-white px-2 py-0.5 rounded-lg border border-sage-border text-[11px] shadow-subtle">ALFA-CONT-0000</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2 pt-0.5">
+          <div class="bg-white border border-sage-border rounded-xl p-2">
+            <span class="text-[10px] text-sage-muted block uppercase font-bold">Cancha</span>
+            <span id="contingencia-cancha-txt" class="font-bold text-sage-dark text-xs truncate block">Cancha 1</span>
+          </div>
+          <div class="bg-white border border-sage-border rounded-xl p-2">
+            <span class="text-[10px] text-sage-muted block uppercase font-bold">Horario</span>
+            <span id="contingencia-horario-txt" class="font-bold text-sage-dark text-xs font-mono truncate block">14:00 - 15:30</span>
+          </div>
+          <div class="bg-white border border-sage-border rounded-xl p-2">
+            <span class="text-[10px] text-sage-muted block uppercase font-bold">Fecha</span>
+            <span id="contingencia-fecha-txt" class="font-bold text-sage-dark text-xs truncate block">Hoy</span>
+          </div>
+          <div class="bg-white border border-sage-border rounded-xl p-2">
+            <span class="text-[10px] text-sage-muted block uppercase font-bold">Titular</span>
+            <span id="contingencia-titular-txt" class="font-bold text-sage-dark text-xs uppercase truncate block">Jugador</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botón Principal para Hablar al WhatsApp -->
+      <div class="space-y-2 pt-1">
+        <a id="btn-contingencia-whatsapp" href="#" target="_blank" onclick="onConfirmarViaWhatsAppClick()" class="w-full py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white text-xs sm:text-sm font-bold transition shadow-modal flex items-center justify-center gap-2 text-center group cursor-pointer">
+          <svg class="w-5 h-5 fill-current flex-shrink-0" viewBox="0 0 24 24">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/>
+          </svg>
+          <span id="btn-contingencia-texto">Hablar por WhatsApp</span>
+          <span class="group-hover:translate-x-1 transition-transform">→</span>
+        </a>
+
+        <div class="grid grid-cols-2 gap-2">
+          <button type="button" onclick="copiarMensajeContingencia()" id="btn-copiar-contingencia" class="w-full py-2.5 rounded-xl bg-sage-bg hover:bg-sage-border border border-sage-border text-sage-dark text-xs font-semibold transition truncate flex items-center justify-center gap-1 cursor-pointer">
+            <span>📋</span> <span id="btn-copiar-txt">Copiar Datos</span>
+          </button>
+          <button type="button" onclick="cerrarModalContingencia()" class="w-full py-2.5 rounded-xl bg-sage-disabled hover:bg-sage-border text-sage-muted hover:text-sage-dark text-xs font-semibold transition truncate cursor-pointer">
+            Cerrar
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= LÓGICA DE LA APLICACIÓN ================= -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyARtZViuMNf6v4rBitZL9Dg7sUChbBefnI",
+      authDomain: "alfa-padel-ced8b.firebaseapp.com",
+      databaseURL: "https://alfa-padel-ced8b-default-rtdb.firebaseio.com",
+      projectId: "alfa-padel-ced8b",
+      storageBucket: "alfa-padel-ced8b.firebasestorage.app",
+      messagingSenderId: "295201362774",
+      appId: "1:295201362774:web:6dbcfc181bef40fbf63cf7"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    const HORARIOS_DEFAULT = ["14:00 - 15:30", "15:30 - 17:00", "17:00 - 18:30", "18:30 - 20:00", "20:00 - 21:30", "21:30 - 23:00", "23:00 - 00:30"];
+    const NOMBRES_DIAS = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
+    const NOMBRES_MESES = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+
+    /* =========================================================
+       CANAL DE CONTINGENCIA Y NORMALIZACIÓN DE WHATSAPP
+       ========================================================= */
+    const DEFAULT_WHATSAPP_CONTINGENCIA = '';
+
+    function normalizarNumeroWhatsAppArg(tel) {
+      if (!tel) return '';
+      const digitos = String(tel).replace(/\D/g, '');
+      if (!digitos) return '';
+      if (digitos.startsWith('549')) return digitos;
+      if (digitos.startsWith('54') && digitos.length >= 12) return '549' + digitos.slice(2);
+      if (digitos.startsWith('0')) return '549' + digitos.slice(1);
+      if (digitos.length === 10) return `549${digitos}`;
+      return digitos;
+    }
+
+    let configContingencia = {
+      whatsapp: localStorage.getItem('alfa_whatsapp_contingencia') || '',
+      habilitado: localStorage.getItem('alfa_contingencia_habilitada') === 'true'
+    };
+
+    function actualizarConfigContingencia(data) {
+      if (!data) return;
+      if (data.whatsapp) {
+        configContingencia.whatsapp = normalizarNumeroWhatsAppArg(data.whatsapp);
+        try { localStorage.setItem('alfa_whatsapp_contingencia', configContingencia.whatsapp); } catch(e){}
+      }
+      if (typeof data.habilitado !== 'undefined') {
+        configContingencia.habilitado = Boolean(data.habilitado);
+        try { localStorage.setItem('alfa_contingencia_habilitada', configContingencia.habilitado ? 'true' : 'false'); } catch(e){}
+      }
+    }
+
+    /* =========================================================
+       FUNCIONES CENTRALIZADAS DE FORMATO DE FECHAS (ARGENTINA)
+       ========================================================= */
+    function formatearFechaArg(valor) {
+      if (!valor && valor !== 0) return '';
+      if (typeof valor === 'string') {
+        const limpio = valor.trim();
+        const match = limpio.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+        if (match) {
+          const aaaa = match[1];
+          const mm = match[2].padStart(2, '0');
+          const dd = match[3].padStart(2, '0');
+          return `${dd}/${mm}/${aaaa}`;
+        }
+      }
+      try {
+        const d = typeof valor === 'number' ? new Date(valor) : (valor instanceof Date ? valor : new Date(valor));
+        if (isNaN(d.getTime())) return String(valor);
+        const dtf = new Intl.DateTimeFormat('es-AR', {
+          timeZone: 'America/Argentina/Buenos_Aires',
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric'
+        });
+        return dtf.format(d);
+      } catch (e) {
+        return String(valor);
+      }
+    }
+
+    function obtenerFechaHoyArgentina() {
+      try {
+        const dtf = new Intl.DateTimeFormat('en-CA', {
+          timeZone: 'America/Argentina/Buenos_Aires',
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        });
+        return dtf.format(new Date());
+      } catch (e) {
+        return new Date().toISOString().slice(0, 10);
+      }
+    }
+
+    let canchaActual = 1;
+    let fechaActual = obtenerFechaHoyArgentina();
+    let turnoSeleccionado = null;
+    let reservasEnVivo = {};
+    let bloqueosEnVivo = {};
+    let configEnVivo = {
+      precios: { cancha1: 16000, cancha2: 16000, general: 16000 },
+      horarios: {
+        horaApertura: '14:00',
+        horaCierre: '00:30',
+        duracionMinutos: 90,
+        diasCerrados: { Dom: false, Lun: false, Mar: false, Mié: false, Jue: false, Vie: false, Sáb: false },
+        listaHorarios: HORARIOS_DEFAULT
+      }
+    };
+
+    // 1. Escuchar Reservas en tiempo real
+    db.ref('reservas').on('value', (snapshot) => {
+      reservasEnVivo = snapshot.val() || {};
+      renderGrilla();
+    });
+
+    // 2. Escuchar Bloqueos en tiempo real
+    db.ref('bloqueos').on('value', (snapshot) => {
+      bloqueosEnVivo = snapshot.val() || {};
+      renderCarruselDias();
+      renderGrilla();
+    });
+
+    // 3. Escuchar Configuración (Precios, Horarios y Contingencia) en tiempo real
+    db.ref('config').on('value', (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        if (data.precios) configEnVivo.precios = data.precios;
+        if (data.horarios) configEnVivo.horarios = data.horarios;
+        if (data.contingencia) {
+          actualizarConfigContingencia(data.contingencia);
+        }
+      }
+      actualizarTarifaBadge();
+      actualizarDuracionBadge();
+      renderCarruselDias();
+      renderGrilla();
+    });
+
+    // 4. Escuchar directamente subrama config/contingencia
+    db.ref('config/contingencia').on('value', (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        actualizarConfigContingencia(data);
+      }
+    });
+
+    // 5. Escuchar directamente subrama config/horarios para sincronización instantánea
+    db.ref('config/horarios').on('value', (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        configEnVivo.horarios = data;
+        actualizarDuracionBadge();
+        renderCarruselDias();
+        renderGrilla();
+      }
+    });
+
+    // Invalidar caché y refrescar si el cliente vuelve a la pestaña
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) {
+        renderCarruselDias();
+        renderGrilla();
+      }
+    });
+    window.addEventListener('focus', () => {
+      renderCarruselDias();
+      renderGrilla();
+    });
+
+    /**
+     * Genera dinámicamente la lista de turnos (franjas horarias) entre apertura y cierre.
+     * Soporta turnos que cruzan la medianoche (ej: 14:00 a 00:30) y cualquier duración en minutos.
+     */
+    function generarTurnosHorarios(horaApertura, horaCierre, duracionMinutos = 90) {
+      if (!horaApertura || !horaCierre || duracionMinutos <= 0) return [];
+      const [apH, apM] = horaApertura.split(':').map(Number);
+      const [ciH, ciM] = horaCierre.split(':').map(Number);
+      if (isNaN(apH) || isNaN(apM) || isNaN(ciH) || isNaN(ciM)) return [];
+
+      const inicioTotal = apH * 60 + apM;
+      let finTotal = ciH * 60 + ciM;
+      if (finTotal <= inicioTotal) {
+        finTotal += 24 * 60;
+      }
+
+      const formatearHora = (minutos) => {
+        const minsNorm = ((minutos % 1440) + 1440) % 1440;
+        const h = Math.floor(minsNorm / 60);
+        const m = minsNorm % 60;
+        return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+      };
+
+      const lista = [];
+      let actual = inicioTotal;
+      while (actual + duracionMinutos <= finTotal) {
+        const sig = actual + duracionMinutos;
+        lista.push(`${formatearHora(actual)} - ${formatearHora(sig)}`);
+        actual = sig;
+      }
+      return lista;
+    }
+
+    /**
+     * Obtiene la lista oficial de turnos activos para el complejo desde la configuración centralizada.
+     * Si existen horas de apertura y cierre configuradas, calcula los turnos en vivo para garantizar
+     * sincronización absoluta en todas las vistas.
+     */
+    function obtenerHorariosActuales() {
+      if (configEnVivo && configEnVivo.horarios) {
+        const h = configEnVivo.horarios;
+        const duracion = Number(h.duracionMinutos) || 90;
+        if (h.horaApertura && h.horaCierre) {
+          const generados = generarTurnosHorarios(h.horaApertura, h.horaCierre, duracion);
+          if (generados.length > 0) {
+            return generados;
+          }
+        }
+        if (Array.isArray(h.listaHorarios) && h.listaHorarios.length > 0) {
+          return h.listaHorarios;
+        }
+      }
+      return HORARIOS_DEFAULT;
+    }
+
+    function obtenerPrecioCancha(numCancha) {
+      if (!configEnVivo || !configEnVivo.precios) return 16000;
+      if (numCancha === 1 && configEnVivo.precios.cancha1) return Number(configEnVivo.precios.cancha1);
+      if (numCancha === 2 && configEnVivo.precios.cancha2) return Number(configEnVivo.precios.cancha2);
+      return Number(configEnVivo.precios.general || 16000);
+    }
+
+    function actualizarTarifaBadge() {
+      const badge = document.getElementById('tarifa-cancha-badge');
+      if (badge) {
+        const precio = obtenerPrecioCancha(canchaActual);
+        badge.textContent = `$${precio.toLocaleString('es-AR')} / turno`;
+      }
+    }
+
+    function actualizarDuracionBadge() {
+      const label = document.getElementById('label-duracion-turnos');
+      if (label) {
+        const duracion = (configEnVivo && configEnVivo.horarios && Number(configEnVivo.horarios.duracionMinutos)) || 90;
+        label.textContent = `Turnos de ${duracion} min`;
+      }
+    }
+
+    function esDiaCerrado(isoFecha) {
+      if (!configEnVivo || !configEnVivo.horarios || !configEnVivo.horarios.diasCerrados) return false;
+      const [y, m, d] = (isoFecha || '').split('-');
+      if (!y || !m || !d) return false;
+      const dateObj = new Date(Number(y), Number(m) - 1, Number(d));
+      const diaNombre = NOMBRES_DIAS[dateObj.getDay()];
+      const dc = configEnVivo.horarios.diasCerrados;
+      return Boolean(dc[diaNombre] || dc[diaNombre.replace('é', 'e').replace('á', 'a')]);
+    }
+
+    function esDiaTotalmenteBloqueado(isoFecha) {
+      if (esDiaCerrado(isoFecha)) return { motivo: 'Día cerrado por cronograma habitual del complejo' };
+      if (!bloqueosEnVivo) return null;
+      const fNorm = String(isoFecha || '').trim();
+      const lista = Object.values(bloqueosEnVivo);
+      for (let i = 0; i < lista.length; i++) {
+        const b = lista[i];
+        if (!b) continue;
+        if (String(b.fecha || '').trim() === fNorm) {
+          if (b.cancha === 'todas' && b.hora === 'todo_el_dia') {
+            return { motivo: b.motivo || 'Complejo bloqueado para evento o mantenimiento' };
+          }
+        }
+      }
+      const c1Bloq = lista.some(b => b && String(b.fecha || '').trim() === fNorm && String(b.cancha) === '1' && b.hora === 'todo_el_dia');
+      const c2Bloq = lista.some(b => b && String(b.fecha || '').trim() === fNorm && String(b.cancha) === '2' && b.hora === 'todo_el_dia');
+      if (c1Bloq && c2Bloq) {
+        return { motivo: 'Todas las canchas se encuentran bloqueadas todo el día' };
+      }
+      return null;
+    }
+
+    function esCanchaBloqueadaTodoElDia(isoFecha, numCancha) {
+      if (!bloqueosEnVivo) return null;
+      const fNorm = String(isoFecha || '').trim();
+      const cNorm = String(numCancha || '').trim();
+      const lista = Object.values(bloqueosEnVivo);
+      for (let i = 0; i < lista.length; i++) {
+        const b = lista[i];
+        if (!b) continue;
+        if (String(b.fecha || '').trim() === fNorm && b.hora === 'todo_el_dia') {
+          if (b.cancha === 'todas' || String(b.cancha || '').trim() === cNorm) {
+            return b;
+          }
+        }
+      }
+      return null;
+    }
+
+    function obtenerBloqueo(fecha, cancha, hora) {
+      if (!bloqueosEnVivo) return null;
+      const fNorm = String(fecha || '').trim();
+      const cNorm = String(cancha || '').trim();
+      const hNorm = String(hora || '').trim();
+      const lista = Object.values(bloqueosEnVivo);
+      for (let i = 0; i < lista.length; i++) {
+        const b = lista[i];
+        if (!b) continue;
+        if (String(b.fecha || '').trim() === fNorm) {
+          const bCancha = String(b.cancha || '').trim();
+          const coincideCancha = (bCancha === cNorm || bCancha === 'todas');
+          if (coincideCancha) {
+            const bHora = String(b.hora || '').trim();
+            const coincideHora = (bHora === hNorm || bHora === 'todo_el_dia');
+            if (coincideHora) return b;
+          }
+        }
+      }
+      return null;
+    }
+
+    function renderCarruselDias() {
+      const contenedor = document.getElementById('carrusel-dias');
+      contenedor.innerHTML = '';
+      const hoyIso = obtenerFechaHoyArgentina();
+      const [hY, hM, hD] = hoyIso.split('-').map(Number);
+      const baseFecha = new Date(hY, hM - 1, hD);
+
+      for (let i = 0; i < 7; i++) {
+        const dia = new Date(baseFecha);
+        dia.setDate(baseFecha.getDate() + i);
+        const aaaa = dia.getFullYear();
+        const mm = String(dia.getMonth() + 1).padStart(2, '0');
+        const dd = String(dia.getDate()).padStart(2, '0');
+        const iso = `${aaaa}-${mm}-${dd}`;
+        const esSel = iso === fechaActual;
+        let etiq = i === 0 ? "Hoy" : (i === 1 ? "Mañana" : NOMBRES_DIAS[dia.getDay()]);
+
+        const diaBloqueado = esDiaTotalmenteBloqueado(iso);
+        const cerrado = Boolean(diaBloqueado);
+
+        const btn = document.createElement('button');
+        btn.onclick = () => { fechaActual = iso; renderCarruselDias(); renderGrilla(); };
+        btn.className = `flex-shrink-0 w-14 sm:w-16 py-2 rounded-2xl text-center border transition-all duration-200 flex flex-col items-center justify-center ${
+          esSel 
+            ? 'bg-sage-light text-sage-dark border-sage-primary shadow-subtle font-bold ring-1 ring-sage-primary/40' 
+            : 'bg-sage-surface text-sage-muted border-sage-border hover:border-sage-primary/50 hover:text-sage-text'
+        }`;
+        btn.innerHTML = `
+          <span class="text-[9px] font-medium tracking-wide uppercase truncate w-full ${esSel ? 'text-sage-dark' : 'text-sage-muted'}">${etiq}</span>
+          <span class="text-sm sm:text-base font-bold my-0.5 ${esSel ? 'text-sage-dark' : 'text-sage-text'}">${dia.getDate()}</span>
+          <span class="text-[9px] font-medium uppercase truncate w-full ${esSel ? 'text-sage-dark' : 'text-sage-muted'}">
+            ${cerrado ? '🚫 Cerr.' : NOMBRES_MESES[dia.getMonth()]}
+          </span>
+        `;
+        contenedor.appendChild(btn);
+      }
+      const [y, m, d] = fechaActual.split('-');
+      const dateObj = new Date(y, m - 1, d);
+      document.getElementById('label-dia-seleccionado').textContent = `${NOMBRES_DIAS[dateObj.getDay()]} ${formatearFechaArg(fechaActual)}`;
+    }
+
+    function cambiarCancha(num) {
+      canchaActual = num;
+      const tab1 = document.getElementById('tab-cancha1');
+      const tab2 = document.getElementById('tab-cancha2');
+
+      if (num === 1) {
+        tab1.className = "py-2 sm:py-2.5 rounded-xl font-bold text-xs bg-white text-sage-dark shadow-subtle transition-all duration-200 truncate";
+        tab2.className = "py-2 sm:py-2.5 rounded-xl font-medium text-xs text-sage-muted hover:text-sage-dark transition-all duration-200 truncate";
+      } else {
+        tab1.className = "py-2 sm:py-2.5 rounded-xl font-medium text-xs text-sage-muted hover:text-sage-dark transition-all duration-200 truncate";
+        tab2.className = "py-2 sm:py-2.5 rounded-xl font-bold text-xs bg-white text-sage-dark shadow-subtle transition-all duration-200 truncate";
+      }
+      actualizarTarifaBadge();
+      renderGrilla();
+    }
+
+    function renderGrilla() {
+      const contenedor = document.getElementById('grilla-turnos');
+      const bannerCerrado = document.getElementById('banner-dia-cerrado');
+      const contGrillaSeccion = document.getElementById('contenedor-grilla-seccion');
+
+      // Verificar si el día entero o complejo está bloqueado / cerrado
+      const diaBloqueado = esDiaTotalmenteBloqueado(fechaActual);
+      if (diaBloqueado) {
+        bannerCerrado.innerHTML = `
+          <div class="font-bold text-sm mb-1">🚫 Club no disponible en esta fecha</div>
+          <p class="text-xs text-rose-700 font-medium">${diaBloqueado.motivo || 'Este día no está habilitado para reservas al público.'}</p>
+        `;
+        bannerCerrado.className = "p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-center";
+        bannerCerrado.classList.remove('hidden');
+        contGrillaSeccion.classList.add('hidden');
+        return;
+      } else {
+        bannerCerrado.classList.add('hidden');
+        contGrillaSeccion.classList.remove('hidden');
+      }
+
+      // Si sólo la cancha actual está bloqueada todo el día
+      const canchaBloqueada = esCanchaBloqueadaTodoElDia(fechaActual, canchaActual);
+
+      contenedor.innerHTML = '';
+      const horariosLista = obtenerHorariosActuales();
+      const precioVigente = obtenerPrecioCancha(canchaActual);
+
+      horariosLista.forEach(hora => {
+        const idClave = `${fechaActual}_C${canchaActual}_${hora.replace(/[^a-zA-Z0-9]/g, '')}`;
+        const ocupado = reservasEnVivo[idClave];
+        const bloqueo = obtenerBloqueo(fechaActual, canchaActual, hora);
+
+        const card = document.createElement('div');
+
+        if (bloqueo) {
+          // Turno Bloqueado: no se puede reservar
+          card.className = "p-3 sm:p-4 rounded-2xl border border-sage-border bg-sage-disabled/80 flex justify-between items-center transition w-full min-w-0 gap-2 opacity-75";
+          card.innerHTML = `
+            <div class="min-w-0 flex-1 overflow-hidden">
+              <div class="text-xs font-semibold text-sage-muted truncate">${hora}</div>
+              <div class="text-xs sm:text-sm font-semibold text-sage-muted mt-0.5 truncate">🚫 No disponible</div>
+            </div>
+            <span class="px-2.5 py-1 bg-sage-border/80 text-sage-muted text-[10px] sm:text-xs font-medium rounded-xl flex-shrink-0">
+              Bloqueado
+            </span>
+          `;
+        } else if (ocupado) {
+          // Turno Ocupado
+          card.className = "p-3 sm:p-4 rounded-2xl border border-sage-border bg-sage-disabled/80 flex justify-between items-center transition w-full min-w-0 gap-2";
+          card.innerHTML = `
+            <div class="min-w-0 flex-1 overflow-hidden">
+              <div class="text-xs font-semibold text-sage-muted truncate">${hora}</div>
+              <div class="text-xs sm:text-sm font-semibold text-sage-muted/80 mt-0.5 truncate">Reservado</div>
+            </div>
+            <span class="px-2.5 py-1 bg-sage-border/70 text-sage-muted text-[10px] sm:text-xs font-medium rounded-xl flex-shrink-0">
+              Ocupado
+            </span>
+          `;
+        } else {
+          // Turno Disponible
+          card.className = "p-3 sm:p-4 rounded-2xl border border-sage-border bg-sage-surface flex justify-between items-center shadow-subtle hover:border-sage-primary/40 transition-all duration-200 w-full min-w-0 gap-2";
+          card.innerHTML = `
+            <div class="min-w-0 flex-1 overflow-hidden">
+              <div class="text-xs sm:text-sm font-bold text-sage-dark truncate">${hora}</div>
+              <div class="text-[11px] sm:text-xs text-sage-primary font-medium flex items-center gap-1.5 mt-0.5 truncate">
+                <span class="w-1.5 h-1.5 rounded-full bg-sage-primary inline-block flex-shrink-0"></span>
+                <span class="truncate">Disponible • $${precioVigente.toLocaleString('es-AR')}</span>
+              </div>
+            </div>
+            <button onclick="abrirModal('${hora}', '${idClave}', ${precioVigente})" class="px-3.5 py-2 rounded-xl bg-sage-primary hover:bg-sage-hover active:bg-sage-active text-white text-xs font-semibold tracking-wide transition shadow-subtle flex-shrink-0">
+              Reservar
+            </button>
+          `;
+        }
+        contenedor.appendChild(card);
+      });
+    }
+
+    /* =========================================================
+       SISTEMA DE CONTINGENCIA Y RECUPERACIÓN LOCAL
+       ========================================================= */
+    let datosContingenciaActivos = null;
+
+    function generarCodigoContingencia() {
+      const random = Math.floor(1000 + Math.random() * 9000);
+      return `ALFA-CONT-${random}`;
+    }
+
+    function generarMensajeWhatsAppContingencia(datos) {
+      const fNorm = formatearFechaArg(datos.fecha);
+      const precioTxt = Number(datos.precio || 0).toLocaleString('es-AR');
+      return `🎾 *SOLICITUD DE TURNO (CANAL DE CONTINGENCIA)*\n*Complejo Alfa Pádel*\n\nHola! Quería confirmar la siguiente reserva generada desde la web:\n\n👤 *Titular:* ${datos.nombre}\n📱 *Teléfono:* ${datos.tel}\n🎾 *Cancha:* Cancha ${datos.cancha} (Cristal) • 90 min\n📅 *Fecha:* ${fNorm}\n⏰ *Horario:* ${datos.hora}\n💰 *Monto:* $${precioTxt}\n\n🔖 *Código de solicitud:* ${datos.codigoContingencia}\n⚠️ *Nota:* Derivación automática por contingencia de sistema.\n\n¿Me confirman la disponibilidad y turno por favor? ¡Muchas gracias!`;
+    }
+
+    function formatNumeroVisibleArg(num) {
+      if (!num) return 'Sin configurar';
+      let str = String(num).replace(/\D/g, '');
+      if (str.startsWith('549')) {
+        const resto = str.slice(3);
+        if (resto.length >= 10) {
+          const codArea = resto.slice(0, 3);
+          const p1 = resto.slice(3, 6);
+          const p2 = resto.slice(6);
+          return `+54 9 ${codArea} ${p1}-${p2}`;
+        }
+        return `+54 9 ${resto}`;
+      }
+      return str;
+    }
+
+    function copiarNumeroAdmin() {
+      const num = configContingencia.whatsapp;
+      if (!num) return;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(num).then(() => {
+          const btn = document.getElementById('btn-copiar-num-admin');
+          if (btn) {
+            btn.textContent = "✓ Copiado";
+            setTimeout(() => { btn.textContent = "Copiar Nro"; }, 2000);
+          }
+        });
+      }
+    }
+
+    function activarContingenciaWhatsApp(datos, motivoFallo = '') {
+      console.warn('[CONTINGENCIA ACTIVADA] Motivo:', motivoFallo, datos);
+
+      const codigo = datos.codigoContingencia || generarCodigoContingencia();
+      datos.codigoContingencia = codigo;
+      datosContingenciaActivos = datos;
+
+      // Respaldo en localStorage para que no se pierdan los datos ante recargas
+      try {
+        localStorage.setItem('alfa_intento_reserva_contingencia', JSON.stringify({
+          ...datos,
+          timestamp: Date.now(),
+          motivoFallo: String(motivoFallo)
+        }));
+      } catch (e) {}
+
+      // Llenar interfaz visual del modal
+      document.getElementById('contingencia-codigo-tag').textContent = codigo;
+      document.getElementById('contingencia-cancha-txt').textContent = `Cancha ${datos.cancha} (Cristal)`;
+      document.getElementById('contingencia-horario-txt').textContent = datos.hora;
+      document.getElementById('contingencia-fecha-txt').textContent = formatearFechaArg(datos.fecha);
+      document.getElementById('contingencia-titular-txt').textContent = datos.nombre;
+
+      // Mostrar el número de WhatsApp al lado
+      const numeroDestino = configContingencia.whatsapp || '';
+      const numVisibleEl = document.getElementById('contingencia-numero-visible');
+      const btnCopiarNum = document.getElementById('btn-copiar-num-admin');
+      if (numVisibleEl) {
+        if (numeroDestino) {
+          numVisibleEl.textContent = formatNumeroVisibleArg(numeroDestino);
+          if (btnCopiarNum) btnCopiarNum.classList.remove('hidden');
+        } else {
+          numVisibleEl.textContent = 'Contactar a administración';
+          if (btnCopiarNum) btnCopiarNum.classList.add('hidden');
+        }
+      }
+
+      // Generar link oficial a la API de WhatsApp
+      const mensajeTexto = generarMensajeWhatsAppContingencia(datos);
+      const urlWa = numeroDestino
+        ? `https://wa.me/${numeroDestino}?text=${encodeURIComponent(mensajeTexto)}`
+        : `https://wa.me/?text=${encodeURIComponent(mensajeTexto)}`;
+
+      const btnWa = document.getElementById('btn-contingencia-whatsapp');
+      const txtBtnWa = document.getElementById('btn-contingencia-texto');
+
+      if (btnWa) {
+        btnWa.href = urlWa;
+      }
+      if (txtBtnWa) {
+        txtBtnWa.textContent = numeroDestino ? "Hablar por WhatsApp" : "Abrir WhatsApp";
+      }
+
+      // Cerrar modal de reserva estándar
+      cerrarModal();
+
+      // Abrir modal de contingencia
+      const modalCont = document.getElementById('modal-contingencia');
+      if (modalCont) {
+        modalCont.classList.remove('hidden');
+        modalCont.classList.add('flex');
+      }
+
+      // Actualizar banner superior
+      actualizarBannerRecuperacion();
+    }
+
+    function cerrarModalContingencia() {
+      const modalCont = document.getElementById('modal-contingencia');
+      if (modalCont) {
+        modalCont.classList.add('hidden');
+        modalCont.classList.remove('flex');
+      }
+    }
+
+    function copiarMensajeContingencia() {
+      if (!datosContingenciaActivos) return;
+      const mensaje = generarMensajeWhatsAppContingencia(datosContingenciaActivos);
+      const btnTxt = document.getElementById('btn-copiar-txt');
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(mensaje).then(() => {
+          if (btnTxt) btnTxt.textContent = "✓ ¡Copiado!";
+          setTimeout(() => { if (btnTxt) btnTxt.textContent = "Copiar Mensaje"; }, 2500);
+        }).catch(() => fallbackCopiar(mensaje, btnTxt));
+      } else {
+        fallbackCopiar(mensaje, btnTxt);
+      }
+    }
+
+    function fallbackCopiar(texto, btnTxt) {
+      const ta = document.createElement('textarea');
+      ta.value = texto;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        if (btnTxt) btnTxt.textContent = "✓ ¡Copiado!";
+        setTimeout(() => { if (btnTxt) btnTxt.textContent = "Copiar Mensaje"; }, 2500);
+      } catch (e) {}
+      document.body.removeChild(ta);
+    }
+
+    function onConfirmarViaWhatsAppClick() {
+      try {
+        const stored = localStorage.getItem('alfa_intento_reserva_contingencia');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          parsed.enviadoAWhatsApp = true;
+          localStorage.setItem('alfa_intento_reserva_contingencia', JSON.stringify(parsed));
+        }
+      } catch (e) {}
+    }
+
+    function reabrirModalContingenciaGuardado() {
+      try {
+        const stored = localStorage.getItem('alfa_intento_reserva_contingencia');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          activarContingenciaWhatsApp(parsed, 'Recuperado de almacenamiento local');
+        }
+      } catch (e) {}
+    }
+
+    function descartarIntentoContingenciaLocal() {
+      try {
+        localStorage.removeItem('alfa_intento_reserva_contingencia');
+      } catch (e) {}
+      datosContingenciaActivos = null;
+      actualizarBannerRecuperacion();
+    }
+
+    function actualizarBannerRecuperacion() {
+      const banner = document.getElementById('banner-recuperacion-contingencia');
+      if (!banner) return;
+      try {
+        const stored = localStorage.getItem('alfa_intento_reserva_contingencia');
+        if (!stored) {
+          banner.classList.add('hidden');
+          return;
+        }
+        const data = JSON.parse(stored);
+        if (Date.now() - (data.timestamp || 0) > 24 * 60 * 60 * 1000) {
+          localStorage.removeItem('alfa_intento_reserva_contingencia');
+          banner.classList.add('hidden');
+          return;
+        }
+        document.getElementById('banner-contingencia-codigo').textContent = data.codigoContingencia || 'ALFA-CONT';
+        document.getElementById('banner-contingencia-detalle').textContent = 
+          `Cancha ${data.cancha} • ${data.hora} (${formatearFechaArg(data.fecha)}) - Titular: ${data.nombre}`;
+        banner.classList.remove('hidden');
+      } catch (e) {
+        banner.classList.add('hidden');
+      }
+    }
+
+    function actualizarEstadoConectividad() {
+      const offlineBanner = document.getElementById('banner-offline-mode');
+      if (offlineBanner) {
+        if (!navigator.onLine) {
+          offlineBanner.classList.remove('hidden');
+        } else {
+          offlineBanner.classList.add('hidden');
+        }
+      }
+    }
+
+    window.addEventListener('online', actualizarEstadoConectividad);
+    window.addEventListener('offline', actualizarEstadoConectividad);
+
+    function abrirModal(hora, clave, precio) {
+      turnoSeleccionado = { hora, clave, precio };
+      document.getElementById('modal-horario').textContent = hora;
+      document.getElementById('modal-detalle').textContent = `Cancha ${canchaActual} • Fecha: ${formatearFechaArg(fechaActual)}`;
+      document.getElementById('modal-precio-tag').textContent = `Total: $${Number(precio).toLocaleString('es-AR')}`;
+
+      // Restauración de datos previos desde localStorage si existen
+      try {
+        const saved = localStorage.getItem('alfa_intento_reserva_contingencia');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed.nombre) document.getElementById('reserva-nombre').value = parsed.nombre;
+          if (parsed.tel) document.getElementById('reserva-tel').value = parsed.tel;
+        } else {
+          document.getElementById('reserva-nombre').value = '';
+          document.getElementById('reserva-tel').value = '';
+        }
+      } catch (e) {
+        document.getElementById('reserva-nombre').value = '';
+        document.getElementById('reserva-tel').value = '';
+      }
+
+      document.getElementById('modal-reserva').classList.remove('hidden');
+      document.getElementById('modal-reserva').classList.add('flex');
+    }
+
+    function cerrarModal() {
+      document.getElementById('modal-reserva').classList.add('hidden');
+      document.getElementById('modal-reserva').classList.remove('flex');
+    }
+
+    function cerrarExito() {
+      document.getElementById('modal-exito').classList.add('hidden');
+      document.getElementById('modal-exito').classList.remove('flex');
+    }
+
+    /* =========================================================
+       CONFIRMACIÓN DE RESERVA RESILIENTE CON FALLBACK A WHATSAPP
+       ========================================================= */
+    async function guardarReserva() {
+      const nombre = document.getElementById('reserva-nombre').value.trim();
+      const tel = document.getElementById('reserva-tel').value.trim();
+
+      if (!nombre || !tel) {
+        alert("Por favor completá tu nombre y teléfono para continuar.");
+        return;
+      }
+
+      const fechaReserva = fechaActual;
+      const canchaReserva = canchaActual;
+      const horaReserva = turnoSeleccionado.hora;
+      const precioVigente = obtenerPrecioCancha(canchaReserva);
+
+      const diaBloq = esDiaTotalmenteBloqueado(fechaReserva);
+      if (diaBloq) {
+        alert("⚠️ El complejo permanece cerrado o bloqueado en este día (" + (diaBloq.motivo || 'No disponible') + ").");
+        return;
+      }
+
+      const turnosHabilitados = obtenerHorariosActuales();
+      if (!turnosHabilitados.includes(horaReserva)) {
+        alert("⚠️ El horario seleccionado ya no está dentro de la franja horaria habilitada por el complejo.");
+        return;
+      }
+
+      const bSlot = obtenerBloqueo(fechaReserva, canchaReserva, horaReserva);
+      if (bSlot) {
+        alert("⚠️ Este horario se encuentra temporalmente bloqueado (" + (bSlot.motivo || 'No disponible') + ").");
+        return;
+      }
+
+      const btn = document.getElementById('btn-confirmar-jugador');
+      btn.disabled = true;
+      btn.textContent = "Confirmando...";
+
+      const datosReserva = {
+        nombre,
+        tel,
+        fecha: fechaReserva,
+        cancha: canchaReserva,
+        hora: horaReserva,
+        precio: precioVigente,
+        estado: 'Pendiente',
+        creadoEn: Date.now()
+      };
+
+      // 1. TRIGGER INMEDIATO: Cliente sin conexión a internet (Modo Offline)
+      if (typeof navigator !== 'undefined' && !navigator.onLine) {
+        btn.disabled = false;
+        btn.textContent = "Confirmar Turno";
+        activarContingenciaWhatsApp(datosReserva, "Dispositivo del cliente sin conexión a internet");
+        return;
+      }
+
+      // 2. TRIGGER BASE DE DATOS / TIMEOUT DE RED / SERVIDOR INACCESIBLE
+      const TIMEOUT_LIMITE_MS = 5000;
+      let timeoutId = null;
+
+      const timeoutPromise = new Promise((_, reject) => {
+        timeoutId = setTimeout(() => {
+          reject(new Error("TIMEOUT_EXCEEDED: El servidor o base de datos no respondió a tiempo"));
+        }, TIMEOUT_LIMITE_MS);
+      });
+
+      const transaccionPromise = new Promise((resolve, reject) => {
+        try {
+          const slotRef = db.ref(`reservas/${turnoSeleccionado.clave}`);
+          slotRef.transaction((currentData) => {
+            if (currentData !== null) {
+              return; // Turno ya tomado
+            }
+            return datosReserva;
+          }, (error, committed, snapshot) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve({ committed, snapshot });
+            }
+          });
+        } catch (syncErr) {
+          reject(syncErr);
+        }
+      });
+
+      try {
+        const resultado = await Promise.race([transaccionPromise, timeoutPromise]);
+        clearTimeout(timeoutId);
+
+        btn.disabled = false;
+        btn.textContent = "Confirmar Turno";
+
+        if (!resultado.committed) {
+          // Turno tomado en el mismo instante por otro jugador
+          alert("⚠️ ¡El turno ya no está disponible! Otro jugador acaba de reservarlo. Por favor seleccioná otro horario.");
+          cerrarModal();
+        } else {
+          // Éxito normal
+          descartarIntentoContingenciaLocal();
+          cerrarModal();
+          document.getElementById('exito-detalle').innerHTML = `
+            <strong>Cancha ${canchaReserva} • ${horaReserva}</strong><br>
+            Fecha: <strong>${formatearFechaArg(fechaReserva)}</strong><br>
+            Monto a abonar: <strong>$${precioVigente.toLocaleString('es-AR')}</strong><br>
+            Titular: <strong>${nombre}</strong>
+          `;
+          document.getElementById('modal-exito').classList.remove('hidden');
+          document.getElementById('modal-exito').classList.add('flex');
+        }
+      } catch (errCritico) {
+        clearTimeout(timeoutId);
+        btn.disabled = false;
+        btn.textContent = "Confirmar Turno";
+        console.warn("[FALLO DETECTADO] Activando fallback a WhatsApp por contingencia:", errCritico);
+        activarContingenciaWhatsApp(datosReserva, errCritico.message || "Fallo de sincronización con la base de datos");
+      }
+    }
+
+    // Inicializar carrusel, estilos y verificación de contingencia previa
+    actualizarBannerRecuperacion();
+    actualizarEstadoConectividad();
+    renderCarruselDias();
+    cambiarCancha(1);
+  </script>
+</body>
+</html>

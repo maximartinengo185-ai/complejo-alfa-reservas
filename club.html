@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complejo Alfa • Canchas de Pádel y Deporte</title>
+  <meta name="description" content="El mejor complejo deportivo. Canchas de pádel profesionales, iluminación LED, tercer tiempo y reservas online al instante.">
+
+  <!-- Fuentes: Outfit e Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#F4F7F4',
+              100: '#E5EDE5',
+              500: '#537352',
+              600: '#425C41',
+              700: '#324631',
+              dark: '#1A231A',
+              accent: '#E65100'
+            }
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            display: ['Outfit', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-[#FAFAFA] text-slate-800 font-sans antialiased selection:bg-brand-500 selection:text-white">
+
+  <!-- ================= NAVBAR ================= -->
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-100 transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Logo -->
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="w-11 h-11 rounded-2xl bg-brand-700 flex items-center justify-center text-white font-display font-extrabold text-xl shadow-md shadow-brand-700/20 group-hover:scale-105 transition-transform">
+          α
+        </div>
+        <div>
+          <span class="font-display font-black text-2xl tracking-tight text-slate-900 block leading-none">ALFA</span>
+          <span class="text-[11px] font-semibold text-brand-600 tracking-wider uppercase">Complejo Deportivo</span>
+        </div>
+      </a>
+
+      <!-- Menu links desktop -->
+      <nav class="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600">
+        <a href="#canchas" class="hover:text-brand-700 transition-colors">Canchas</a>
+        <a href="#servicios" class="hover:text-brand-700 transition-colors">Servicios</a>
+        <a href="#pasos" class="hover:text-brand-700 transition-colors">Cómo Reservar</a>
+        <a href="#ubicacion" class="hover:text-brand-700 transition-colors">Ubicación</a>
+      </nav>
+
+      <!-- Botón de Acción Principal (apunta al subdominio) -->
+      <div class="flex items-center gap-3">
+        <!-- Reemplaza con tu URL real, por ejemplo / -->
+        <a href="/" target="_blank" class="inline-flex items-center gap-2 bg-brand-700 hover:bg-brand-600 text-white font-bold text-sm px-5 py-2.5 rounded-full shadow-lg shadow-brand-700/25 hover:shadow-brand-600/35 transition-all hover:-translate-y-0.5 active:translate-y-0">
+          <span>🎾 Reservar Turno</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= HERO SECTION ================= -->
+  <section class="relative overflow-hidden pt-12 pb-20 lg:pt-20 lg:pb-32 bg-gradient-to-b from-brand-50/60 to-transparent">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        
+        <div class="lg:col-span-7 text-center lg:text-left space-y-6">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-100/80 text-brand-700 text-xs font-bold tracking-wide uppercase">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            Turnos en tiempo real
+          </div>
+
+          <h1 class="font-display font-extrabold text-4xl sm:text-5xl lg:text-6xl text-slate-900 tracking-tight leading-[1.1]">
+            Viví el mejor Pádel en <span class="text-brand-700 underline decoration-brand-500/30">Complejo Alfa</span>
+          </h1>
+
+          <p class="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+            Canchas panorámicas de última generación, iluminación profesional LED y un tercer tiempo inigualable. Reservá tu cancha online al instante sin esperas.
+          </p>
+
+          <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+            <a href="/" target="_blank" class="w-full sm:w-auto text-center px-8 py-4 rounded-2xl bg-brand-700 hover:bg-brand-600 text-white font-display font-bold text-base shadow-xl shadow-brand-700/20 hover:shadow-brand-600/30 transition-all hover:-translate-y-0.5">
+              🎾 Reservar Turno Online
+            </a>
+            
+            <a href="https://wa.me/5491112345678?text=Hola!%20Quería%20consultar%20por%20turnos" target="_blank" class="w-full sm:w-auto text-center px-8 py-4 rounded-2xl bg-white border border-slate-200 hover:border-slate-300 text-slate-700 font-bold text-base shadow-sm hover:shadow transition-all flex items-center justify-center gap-2">
+              <svg class="w-5 h-5 text-emerald-600 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+              <span>Consultar WhatsApp</span>
+            </a>
+          </div>
+
+          <!-- Badges de confianza -->
+          <div class="pt-6 border-t border-slate-200/60 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-sm text-slate-600">
+            <div class="flex items-center gap-2 font-medium">
+              <span class="text-emerald-500 font-bold">✓</span> 2 Canchas Panorámicas
+            </div>
+            <div class="flex items-center gap-2 font-medium">
+              <span class="text-emerald-500 font-bold">✓</span> Iluminación LED Pro
+            </div>
+            <div class="flex items-center gap-2 font-medium">
+              <span class="text-emerald-500 font-bold">✓</span> Estacionamiento Gratis
+            </div>
+          </div>
+        </div>
+
+        <!-- Tarjeta Visual / Preview -->
+        <div class="lg:col-span-5 relative">
+          <div class="relative mx-auto max-w-md rounded-3xl bg-white p-6 shadow-2xl border border-slate-100 ring-1 ring-slate-900/5">
+            <div class="relative h-64 rounded-2xl overflow-hidden mb-6 bg-slate-900">
+              <img src="https://images.unsplash.com/photo-1554068865-24cecd4e34b8?auto=format&fit=crop&w=800&q=80" alt="Cancha de Pádel" class="w-full h-full object-cover opacity-90 hover:scale-105 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+              <div class="absolute bottom-4 left-4 right-4 text-white">
+                <span class="px-2.5 py-1 rounded-md bg-brand-700 text-xs font-bold uppercase tracking-wider">Cancha 1 & 2</span>
+                <p class="font-display font-bold text-lg mt-1">Césped Sintético & Cristal Templado</p>
+              </div>
+            </div>
+
+            <div class="space-y-3">
+              <div class="flex justify-between items-center text-sm">
+                <span class="text-slate-500 font-medium">Horario de juego:</span>
+                <span class="font-bold text-slate-900">Lunes a Domingos • 08:00 a 00:00</span>
+              </div>
+              <div class="flex justify-between items-center text-sm">
+                <span class="text-slate-500 font-medium">Duración del turno:</span>
+                <span class="font-bold text-slate-900">90 minutos</span>
+              </div>
+              <div class="flex justify-between items-center text-sm">
+                <span class="text-slate-500 font-medium">Reserva online:</span>
+                <span class="inline-flex items-center gap-1 text-emerald-600 font-bold">● Confirmación al instante</span>
+              </div>
+            </div>
+
+            <a href="/" target="_blank" class="mt-6 block w-full py-3.5 px-4 rounded-xl bg-slate-900 hover:bg-brand-700 text-white font-bold text-center text-sm transition-colors">
+              Elegir fecha y reservar ➔
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= NUESTRAS CANCHAS & SERVICIOS ================= -->
+  <section id="canchas" class="py-20 bg-white border-y border-slate-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+        <h2 class="text-xs font-bold text-brand-600 uppercase tracking-widest">Instalaciones de primer nivel</h2>
+        <p class="font-display font-extrabold text-3xl sm:text-4xl text-slate-900">Todo lo que necesitás para tu partido</p>
+        <p class="text-slate-600">Disfrutá de la mejor experiencia dentro y fuera de la pista.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Tarjeta 1 -->
+        <div class="bg-slate-50 rounded-3xl p-8 border border-slate-100 hover:border-brand-500/30 hover:shadow-lg transition-all group">
+          <div class="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">
+            🎾
+          </div>
+          <h3 class="font-display font-bold text-xl text-slate-900 mb-2">Canchas Panorámicas</h3>
+          <p class="text-slate-600 text-sm leading-relaxed">
+            Cristal templado de máxima visión, césped texturado con arena fina y rebote parejo para un juego dinámico y seguro.
+          </p>
+        </div>
+
+        <!-- Tarjeta 2 -->
+        <div class="bg-slate-50 rounded-3xl p-8 border border-slate-100 hover:border-brand-500/30 hover:shadow-lg transition-all group">
+          <div class="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">
+            💡
+          </div>
+          <h3 class="font-display font-bold text-xl text-slate-900 mb-2">Iluminación LED Pro</h3>
+          <p class="text-slate-600 text-sm leading-relaxed">
+            Columnas con proyectores LED antideslumbramiento de alta potencia para que juegues de noche con visibilidad total.
+          </p>
+        </div>
+
+        <!-- Tarjeta 3 -->
+        <div class="bg-slate-50 rounded-3xl p-8 border border-slate-100 hover:border-brand-500/30 hover:shadow-lg transition-all group">
+          <div class="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">
+            🍔
+          </div>
+          <h3 class="font-display font-bold text-xl text-slate-900 mb-2">Bar & Tercer Tiempo</h3>
+          <p class="text-slate-600 text-sm leading-relaxed">
+            Bebidas frías, cafetería, snacks y un sector chill para compartir con amigos antes y después del partido.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CÓMO RESERVAR ================= -->
+  <section id="pasos" class="py-20 bg-brand-50/40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
+        <h2 class="text-xs font-bold text-brand-600 uppercase tracking-widest">Simple y Rápido</h2>
+        <p class="font-display font-extrabold text-3xl sm:text-4xl text-slate-900">Reservá en 3 simples pasos</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+        <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 space-y-4">
+          <div class="w-12 h-12 mx-auto rounded-full bg-brand-100 text-brand-700 font-display font-extrabold text-lg flex items-center justify-center">1</div>
+          <h4 class="font-display font-bold text-lg text-slate-900">Elegí fecha y horario</h4>
+          <p class="text-sm text-slate-600">Consultá en la web interactiva los turnos y canchas libres en tiempo real.</p>
+        </div>
+
+        <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 space-y-4">
+          <div class="w-12 h-12 mx-auto rounded-full bg-brand-100 text-brand-700 font-display font-extrabold text-lg flex items-center justify-center">2</div>
+          <h4 class="font-display font-bold text-lg text-slate-900">Ingresá tus datos</h4>
+          <p class="text-sm text-slate-600">Escribí tu nombre y teléfono para identificar tu reserva en recepción.</p>
+        </div>
+
+        <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 space-y-4">
+          <div class="w-12 h-12 mx-auto rounded-full bg-brand-100 text-brand-700 font-display font-extrabold text-lg flex items-center justify-center">3</div>
+          <h4 class="font-display font-bold text-lg text-slate-900">¡Listo para jugar!</h4>
+          <p class="text-sm text-slate-600">Tu turno queda reservado de inmediato en el sistema del club.</p>
+        </div>
+      </div>
+
+      <div class="text-center mt-12">
+        <a href="/" target="_blank" class="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-brand-700 hover:bg-brand-600 text-white font-bold shadow-lg shadow-brand-700/20 transition-all hover:scale-105">
+          Ir a la plataforma de reservas ➔
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= UBICACIÓN Y CONTACTO ================= -->
+  <section id="ubicacion" class="py-20 bg-white border-t border-slate-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-slate-900 rounded-3xl text-white overflow-hidden p-8 sm:p-12 lg:p-16 relative">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          
+          <div class="space-y-6">
+            <span class="text-xs font-bold tracking-widest text-brand-500 uppercase">Te esperamos</span>
+            <h3 class="font-display font-extrabold text-3xl sm:text-4xl text-white">¿Dónde encontrarnos?</h3>
+            <p class="text-slate-300 leading-relaxed">
+              Estamos ubicados en una zona de fácil acceso con estacionamiento seguro para jugadores y espectadores.
+            </p>
+
+            <div class="space-y-4 text-sm text-slate-200">
+              <div class="flex items-center gap-3">
+                <span class="text-xl">📍</span>
+                <span>Av. Principal 1234, Tu Ciudad, Provincia</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="text-xl">🕒</span>
+                <span>Lunes a Domingos de 08:00 a 00:00 hs</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="text-xl">📱</span>
+                <span>+54 9 11 1234-5678</span>
+              </div>
+            </div>
+
+            <div class="pt-2">
+              <a href="https://maps.google.com" target="_blank" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold text-sm px-5 py-3 rounded-xl border border-white/20 transition-all">
+                Abrir en Google Maps ↗
+              </a>
+            </div>
+          </div>
+
+          <div class="rounded-2xl overflow-hidden bg-slate-800 border border-slate-700 h-64 lg:h-80 flex items-center justify-center text-slate-400">
+            <div class="text-center p-6">
+              <span class="text-4xl block mb-2">🗺️</span>
+              <p class="font-bold text-white">Mapa Interactivo</p>
+              <p class="text-xs text-slate-400 mt-1">Podés incrustar el iframe de Google Maps aquí fácilmente.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-white py-12 border-t border-slate-100 text-sm text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-brand-700 flex items-center justify-center text-white font-display font-black text-sm">
+          α
+        </div>
+        <span class="font-display font-bold text-slate-900">Complejo Alfa</span>
+        <span>• Todos los derechos reservados.</span>
+      </div>
+
+      <div class="flex items-center gap-6 font-medium">
+        <a href="#canchas" class="hover:text-slate-900 transition-colors">Canchas</a>
+        <a href="#servicios" class="hover:text-slate-900 transition-colors">Servicios</a>
+        <a href="/" class="text-brand-700 font-bold hover:underline">Reservas Online</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Botón Flotante WhatsApp -->
+  <a href="https://wa.me/5491112345678?text=Hola!%20Quería%20consultar%20por%20un%20turno" target="_blank" class="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white flex items-center justify-center shadow-xl shadow-emerald-500/30 hover:scale-110 active:scale-95 transition-all" title="Contactar por WhatsApp">
+    <svg class="w-7 h-7 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+  </a>
+
+</body>
+</html>
