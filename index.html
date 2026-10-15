@@ -240,19 +240,30 @@
   </main>
 
   <!-- ================= PIE DE PÁGINA PROFESIONAL ================= -->
-  <footer class="mt-6 border-t border-sage-border bg-sage-surface py-5 px-4 text-center w-full">
-    <div class="max-w-2xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2.5 text-xs text-sage-muted">
-      <div class="flex items-center gap-2">
-        <span class="font-semibold text-sage-dark">FacilReserva</span>
+  <footer class="mt-8 border-t border-sage-border bg-sage-surface py-5 px-4 text-center w-full">
+    <div class="max-w-2xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-sage-muted">
+      
+      <!-- Enlace Promocional FacilReserva (Requerimiento 2) -->
+      <div class="flex items-center justify-center sm:justify-start gap-1.5 text-xs text-sage-dark flex-wrap">
+        <span class="text-sage-muted">¿Querés tu propio sistema de reservas?</span>
+        <a id="footer-facilreserva-link" href="https://facilreserva.com?utm_source=alfa_padel&utm_medium=pie_de_pagina&utm_campaign=facilreserva_negocios" target="_blank" rel="noopener noreferrer" class="font-bold text-sage-primary hover:text-sage-hover hover:underline transition-colors inline-flex items-center gap-1">
+          <span>Conocé FacilReserva</span>
+          <span class="text-[10px] text-sage-primary">↗</span>
+        </a>
+      </div>
+
+      <!-- Marca y Garantía de Seguridad -->
+      <div class="flex items-center justify-center sm:justify-end gap-2.5 text-[11px] text-sage-muted">
+        <div class="flex items-center gap-1">
+          <svg class="w-3.5 h-3.5 text-sage-primary flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944z" clip-rule="evenodd"/>
+          </svg>
+          <span>Confirmación segura e instantánea</span>
+        </div>
         <span>•</span>
-        <span>Complejo Alfa Pádel</span>
+        <span class="font-semibold text-sage-dark">Complejo Alfa Pádel</span>
       </div>
-      <div class="flex items-center gap-1.5 text-[11px]">
-        <svg class="w-3.5 h-3.5 text-sage-primary flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944z" clip-rule="evenodd"/>
-        </svg>
-        <span>Confirmación segura e instantánea</span>
-      </div>
+
     </div>
   </footer>
 
@@ -301,21 +312,99 @@
     </div>
   </div>
 
-  <!-- ================= MODAL CONFIRMACIÓN DE ÉXITO ================= -->
-  <div id="modal-exito" class="fixed inset-0 bg-[#263128]/45 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
-    <div class="w-full max-w-sm bg-sage-surface border border-sage-border rounded-2xl p-5 sm:p-6 text-center space-y-3.5 shadow-modal fade-in">
-      <div class="w-11 h-11 bg-sage-light text-sage-primary rounded-full flex items-center justify-center mx-auto border border-sage-primary/30">
-        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+  <!-- ================= MODAL CONFIRMACIÓN DE ÉXITO Y PUBLICIDAD FACILRESERVA ================= -->
+  <div id="modal-exito" class="fixed inset-0 bg-[#263128]/45 backdrop-blur-sm hidden items-center justify-center z-50 p-3 sm:p-4 transition-all">
+    <div class="w-full max-w-md bg-sage-surface border border-sage-border rounded-3xl p-4 sm:p-5 text-center space-y-3.5 shadow-modal fade-in my-auto max-h-[92dvh] overflow-y-auto">
+      
+      <!-- 1. Cabecera de Confirmación del Turno -->
+      <div class="w-12 h-12 bg-sage-light text-sage-primary rounded-full flex items-center justify-center mx-auto border border-sage-primary/30 shadow-subtle">
+        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
           <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
         </svg>
       </div>
       <div>
-        <h4 class="text-sm sm:text-base font-bold text-sage-dark">¡Turno Reservado con Éxito!</h4>
-        <p id="exito-detalle" class="text-xs text-sage-muted mt-1 font-medium leading-relaxed"></p>
+        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-bold uppercase tracking-wider mb-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+          Reserva Confirmada
+        </div>
+        <h4 class="text-base sm:text-lg font-bold text-sage-dark tracking-tight">¡Turno Reservado con Éxito!</h4>
+        <div class="mt-2 bg-sage-bg p-3 rounded-2xl border border-sage-border text-left">
+          <p id="exito-detalle" class="text-xs text-sage-muted font-medium leading-relaxed"></p>
+        </div>
       </div>
-      <button onclick="cerrarExito()" class="w-full py-2.5 rounded-xl bg-sage-primary hover:bg-sage-hover text-white text-xs font-semibold transition shadow-subtle">
+
+      <!-- 2. Tarjeta Publicitaria Promocional FacilReserva (No Invasiva, Requerimientos 1, 3, 4, 5, 6) -->
+      <section class="bg-[#F4F7F4] border border-sage-primary/25 rounded-2xl p-3.5 sm:p-4 text-left space-y-3 shadow-subtle" aria-label="Promoción FacilReserva">
+        
+        <!-- Header con Identidad FacilReserva -->
+        <div class="flex items-center justify-between gap-2">
+          <div class="flex items-center gap-1.5">
+            <div class="w-5 h-5 rounded-md bg-sage-primary text-white flex items-center justify-center text-[10px] font-bold shadow-2xs">
+              ✓
+            </div>
+            <span class="text-xs font-bold text-sage-dark tracking-tight">FacilReserva</span>
+          </div>
+          <span class="text-[9px] font-semibold text-sage-primary bg-white px-2 py-0.5 rounded-full border border-sage-primary/20">
+            Para Negocios
+          </span>
+        </div>
+
+        <!-- Título y Texto Requeridos -->
+        <div class="space-y-1">
+          <h5 class="text-xs sm:text-sm font-bold text-sage-dark leading-snug">
+            ¿Tenés un negocio y querés organizar tus turnos online?
+          </h5>
+          <p class="text-[11px] sm:text-xs text-sage-muted leading-relaxed">
+            Creá una experiencia de reservas sencilla para tus clientes con FacilReserva.
+          </p>
+        </div>
+
+        <!-- Orientación a rubros (peluquerías, barberías, estética, consultorios, profesores, complejos deportivos) -->
+        <div class="flex flex-wrap gap-1 pt-0.5">
+          <span class="inline-flex items-center gap-1 text-[10px] font-medium bg-white text-sage-dark border border-sage-border px-2 py-0.5 rounded-lg">
+            <span>✂️</span><span>Peluquerías y Barberías</span>
+          </span>
+          <span class="inline-flex items-center gap-1 text-[10px] font-medium bg-white text-sage-dark border border-sage-border px-2 py-0.5 rounded-lg">
+            <span>💅</span><span>Estética y Spas</span>
+          </span>
+          <span class="inline-flex items-center gap-1 text-[10px] font-medium bg-white text-sage-dark border border-sage-border px-2 py-0.5 rounded-lg">
+            <span>🩺</span><span>Consultorios</span>
+          </span>
+          <span class="inline-flex items-center gap-1 text-[10px] font-medium bg-white text-sage-dark border border-sage-border px-2 py-0.5 rounded-lg">
+            <span>📚</span><span>Profesores y Clases</span>
+          </span>
+          <span class="inline-flex items-center gap-1 text-[10px] font-medium bg-white text-sage-dark border border-sage-border px-2 py-0.5 rounded-lg">
+            <span>🎾</span><span>Complejos Deportivos</span>
+          </span>
+          <span class="inline-flex items-center gap-1 text-[10px] font-medium bg-sage-light/60 text-sage-dark border border-sage-primary/20 px-1.5 py-0.5 rounded-lg">
+            <span>+ Otros rubros con turnos</span>
+          </span>
+        </div>
+
+        <!-- Botones de Conversión y Consulta -->
+        <div class="space-y-1.5 pt-1">
+          <!-- Botón Principal a Web Oficial con Medición -->
+          <a id="promo-facilreserva-btn-web" href="https://facilreserva.com?utm_source=alfa_padel&utm_medium=confirmacion_reserva&utm_campaign=facilreserva_negocios" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-3 rounded-xl bg-sage-primary hover:bg-sage-hover active:bg-sage-active text-white text-xs font-bold transition shadow-subtle flex items-center justify-center gap-1.5 text-center group">
+            <span>Conocé FacilReserva</span>
+            <span class="group-hover:translate-x-0.5 transition-transform text-xs">↗</span>
+          </a>
+
+          <!-- Botón Secundario Alternativa WhatsApp si está configurado -->
+          <a id="promo-facilreserva-btn-wa" href="https://wa.me/5491123456789?text=Hola!%20Acabo%20de%20reservar%20en%20Alfa%20P%C3%A1del%20y%20me%20gustar%C3%ADa%20conocer%20m%C3%A1s%20sobre%20FacilReserva%20para%20mi%20negocio." target="_blank" rel="noopener noreferrer" class="w-full py-2 px-3 rounded-xl bg-white hover:bg-emerald-50/60 border border-emerald-300 text-emerald-800 text-xs font-semibold transition flex items-center justify-center gap-1.5 text-center shadow-2xs">
+            <svg class="w-3.5 h-3.5 fill-current text-emerald-600 flex-shrink-0" viewBox="0 0 24 24">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/>
+            </svg>
+            <span>Consultar por WhatsApp</span>
+          </a>
+        </div>
+
+      </section>
+
+      <!-- 3. Botón de Cierre "Entendido" para Volver a la App (Secundario, Requerimiento 8) -->
+      <button type="button" onclick="cerrarExito()" class="w-full py-2.5 rounded-xl bg-sage-disabled hover:bg-sage-border text-sage-dark text-xs font-semibold transition truncate cursor-pointer">
         Entendido
       </button>
+
     </div>
   </div>
 
@@ -430,6 +519,70 @@
     const HORARIOS_DEFAULT = ["14:00 - 15:30", "15:30 - 17:00", "17:00 - 18:30", "18:30 - 20:00", "20:00 - 21:30", "21:30 - 23:00", "23:00 - 00:30"];
     const NOMBRES_DIAS = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
     const NOMBRES_MESES = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+
+    /* =========================================================
+       CONFIGURACIÓN CENTRALIZADA: PUBLICIDAD FACILRESERVA
+       Requerimientos 5, 6 y 7: Enlaces oficiales, WhatsApp comercial y medición.
+       ========================================================= */
+    const CONFIG_PROMO_FACILRESERVA = {
+      // Web oficial de FacilReserva (sin inventar URLs, extraída del proyecto)
+      urlWeb: 'https://facilreserva.com',
+
+      // WhatsApp comercial de FacilReserva para consultas de negocios (extraído de landing/index.html)
+      // Si se deja vacío (""), la opción de WhatsApp en la tarjeta promocional se oculta automáticamente.
+      whatsappTelefono: '5491123456789',
+
+      // Mensaje comercial predeterminado para consultas directas desde la reserva
+      whatsappMensaje: 'Hola! Acabo de reservar en Alfa Pádel y me gustaría conocer más sobre FacilReserva para mi negocio.',
+
+      // Parámetros de medición limpios por canal (sin ningún dato personal del jugador)
+      tracking: {
+        confirmacionReserva: 'utm_source=alfa_padel&utm_medium=confirmacion_reserva&utm_campaign=facilreserva_negocios',
+        pieDePagina: 'utm_source=alfa_padel&utm_medium=pie_de_pagina&utm_campaign=facilreserva_negocios'
+      }
+    };
+
+    function obtenerEnlaceFacilReserva(canal) {
+      const base = CONFIG_PROMO_FACILRESERVA.urlWeb || 'https://facilreserva.com';
+      const params = CONFIG_PROMO_FACILRESERVA.tracking[canal] || '';
+      if (!params) return base;
+      return base.includes('?') ? `${base}&${params}` : `${base}?${params}`;
+    }
+
+    function obtenerEnlaceWhatsAppFacilReserva() {
+      const tel = (CONFIG_PROMO_FACILRESERVA.whatsappTelefono || '').replace(/\D/g, '');
+      if (!tel) return '';
+      const texto = CONFIG_PROMO_FACILRESERVA.whatsappMensaje || 'Hola! Quiero más información sobre FacilReserva';
+      return `https://wa.me/${tel}?text=${encodeURIComponent(texto)}`;
+    }
+
+    function aplicarEnlacesPromoFacilReserva() {
+      // 1. Botón Web en la tarjeta post-reserva
+      const btnWeb = document.getElementById('promo-facilreserva-btn-web');
+      if (btnWeb) {
+        btnWeb.href = obtenerEnlaceFacilReserva('confirmacionReserva');
+      }
+
+      // 2. Botón WhatsApp comercial en tarjeta post-reserva (condicional si está configurado)
+      const btnWa = document.getElementById('promo-facilreserva-btn-wa');
+      const waUrl = obtenerEnlaceWhatsAppFacilReserva();
+      if (btnWa) {
+        if (waUrl) {
+          btnWa.href = waUrl;
+          btnWa.classList.remove('hidden');
+          btnWa.classList.add('flex');
+        } else {
+          btnWa.classList.add('hidden');
+          btnWa.classList.remove('flex');
+        }
+      }
+
+      // 3. Enlace en el pie de página
+      const linkFooter = document.getElementById('footer-facilreserva-link');
+      if (linkFooter) {
+        linkFooter.href = obtenerEnlaceFacilReserva('pieDePagina');
+      }
+    }
 
     /* =========================================================
        CANAL DE CONTINGENCIA Y NORMALIZACIÓN DE WHATSAPP
@@ -1234,6 +1387,7 @@
           `;
           document.getElementById('modal-exito').classList.remove('hidden');
           document.getElementById('modal-exito').classList.add('flex');
+          aplicarEnlacesPromoFacilReserva();
         }
       } catch (errCritico) {
         clearTimeout(timeoutId);
@@ -1249,6 +1403,7 @@
     actualizarEstadoConectividad();
     renderCarruselDias();
     cambiarCancha(1);
+    aplicarEnlacesPromoFacilReserva();
   </script>
 </body>
 </html>
